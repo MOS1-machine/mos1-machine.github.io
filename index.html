@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#000000">
+<title>Artem Rostovskyi - Digital Card</title>
+<meta name="description" content="Artem Rostovskyi, Technician and Programmer. Digital NFC business card.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Artem Rostovskyi - Technician &amp; Programmer">
+<meta property="og:description" content="From idea to finished prototype. Digital NFC business card.">
+<meta property="og:image" content="https://mos1-machine.github.io/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23111'/%3E%3Cpath d='M6 24V8l5 7 5-7v16M20 8h6v16h-6z' fill='none' stroke='%23ff9500' stroke-width='2.4'/%3E%3C/svg%3E">
+<style>
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--o:#ff9500;--o2:#ff6b00;--t2:#a5a5ad;--t3:#6a6a73;--ln:#2a2a31;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+html{background:#000}
+body{min-height:100vh;min-height:100svh;display:grid;place-items:center;background:#000;color:#f0f0f2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen,Ubuntu,sans-serif;padding:max(14px,env(safe-area-inset-top)) 14px max(14px,env(safe-area-inset-bottom))}
+#bg{position:fixed;inset:0;width:100%;height:100%;z-index:0}
+body::before{content:"";position:fixed;inset:0;z-index:1;pointer-events:none;background:radial-gradient(ellipse at center,transparent 30%,#000 100%)}
+a{text-decoration:none;color:inherit}
+.card{position:relative;z-index:2;width:100%;max-width:430px;margin:12px auto;padding:26px 22px 22px;border-radius:24px;background:linear-gradient(160deg,#101014,#050507);border:1px solid rgba(255,149,0,.28);box-shadow:0 24px 70px #000,0 0 50px rgba(255,110,0,.13)}
+.rv{animation:up .6s cubic-bezier(.2,.7,.2,1) both;animation-delay:calc(var(--i,0)*60ms)}
+@keyframes up{from{opacity:0;transform:translateY(14px)}}
+
+.top{position:relative;margin-bottom:20px}
+.langs{position:absolute;right:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:4px;padding:4px;border:1px solid var(--ln);border-radius:12px;background:rgba(255,255,255,.03)}
+.l{border:0;background:none;color:var(--t2);font:700 12px var(--mono);padding:11px 12px;border-radius:9px;cursor:pointer}
+.l.on{background:linear-gradient(135deg,var(--o),var(--o2));color:#fff}
+
+/* logo */
+.wrap{position:relative;display:block;width:calc(100% - 140px);max-width:234px;margin:0 auto}
+.wrap::before{content:"";position:absolute;inset:-8px;pointer-events:none;background:
+linear-gradient(var(--o),var(--o)) 0 0/16px 2px,linear-gradient(var(--o),var(--o)) 0 0/2px 16px,
+linear-gradient(var(--o),var(--o)) 100% 0/16px 2px,linear-gradient(var(--o),var(--o)) 100% 0/2px 16px,
+linear-gradient(var(--o),var(--o)) 0 100%/16px 2px,linear-gradient(var(--o),var(--o)) 0 100%/2px 16px,
+linear-gradient(var(--o),var(--o)) 100% 100%/16px 2px,linear-gradient(var(--o),var(--o)) 100% 100%/2px 16px;background-repeat:no-repeat;animation:br 3s ease-in-out infinite}
+@keyframes br{50%{inset:-12px;opacity:.6}}
+.avatar{position:relative;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:#151515;box-shadow:0 0 0 1px rgba(255,149,0,.4),0 12px 40px rgba(255,120,0,.28)}
+.avatar::after{content:"";position:absolute;left:0;right:0;top:-45%;height:38%;opacity:0;pointer-events:none;background:linear-gradient(transparent,rgba(255,149,0,.42),transparent)}
+.avatar.scan::after{animation:scan 1.6s ease-in-out 1 forwards}
+@keyframes scan{0%{top:-45%;opacity:1}100%{top:108%;opacity:1}}
+.avatar img{display:block;width:100%;height:100%;object-fit:cover}
+
+h1{text-align:center;font-size:clamp(27px,8vw,33px);font-weight:800;letter-spacing:-.5px;line-height:1.15;background:linear-gradient(90deg,#fff,#ffd39a 55%,var(--o));-webkit-background-clip:text;background-clip:text;color:transparent;min-height:1.2em}
+.title{text-align:center;margin:8px 0 16px;font:600 12px var(--mono);letter-spacing:2.5px;text-transform:uppercase;color:var(--o);min-height:1.4em}
+.bio{text-align:center;font-size:14px;line-height:1.65;color:var(--t2);margin-bottom:20px}
+.skills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.chip{font:600 12px var(--mono);padding:8px 14px;border-radius:999px;border:1px solid rgba(255,149,0,.35);background:rgba(255,149,0,.07);color:#ffb04d}
+
+/* portfolio */
+.port{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;width:100%;padding:17px 20px;margin-bottom:12px;border-radius:14px;border:2px solid rgba(255,149,0,.45);background:linear-gradient(135deg,rgba(255,149,0,.18),rgba(255,107,0,.06));font-weight:800;letter-spacing:1.5px;text-transform:uppercase;font-size:15px;animation:breathe 2.8s ease-in-out infinite}
+.port small{display:block;margin-top:2px;font:600 10px var(--mono);letter-spacing:1.5px;color:#ffb04d}
+.port>*{position:relative;z-index:1}
+.port::before{content:"";position:absolute;inset:0;border-radius:12px;padding:2px;pointer-events:none;background:conic-gradient(from var(--a),transparent 0 62%,var(--o) 80%,#ffe9c4 90%,transparent 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 3s linear infinite}
+.port::after{content:"";position:absolute;top:0;bottom:0;left:0;width:45%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,220,160,.35),transparent);animation:sheen 3.4s ease-in-out infinite}
+.ar{width:12px;height:12px;border-top:3px solid var(--o);border-right:3px solid var(--o);transform:rotate(45deg);flex:none;margin-right:4px;animation:nudge 1.6s ease-in-out infinite}
+
+.col{display:flex;flex-direction:column;gap:10px}
+.btn{position:relative;overflow:hidden;display:flex;align-items:center;gap:14px;padding:15px 18px;border-radius:14px;background:rgba(255,255,255,.03);border:1px solid var(--ln);transition:transform .15s}
+.btn:active,.s:active,.port:active,.save:active{transform:scale(.97)}
+.btn svg{width:24px;height:24px;flex:none;color:var(--o)}
+.btn small{display:block;font:600 10px var(--mono);letter-spacing:1.5px;color:var(--t3);text-transform:uppercase}
+.btn span{font-size:15px;font-weight:500;word-break:break-word}
+
+/* solid brand socials */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.s{position:relative;overflow:hidden;--g:var(--c);display:flex;align-items:center;justify-content:center;min-height:50px;padding:12px 8px;border-radius:12px;font-weight:700;font-size:14px;color:#fff;background:var(--c);transition:transform .15s;animation:glow 3.8s ease-in-out infinite;animation-delay:calc(var(--k,0)*-.65s)}
+.s::after{content:"";position:absolute;top:0;bottom:0;left:0;width:40%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.22),transparent);animation:sheen 6s ease-in-out infinite;animation-delay:calc(var(--k,0)*-1.1s)}
+.tg{--c:#27A7E7}.dc{--c:#5865F2}.wa{--c:#25D366;color:#04240f}.yt{--c:#FF0000}
+.gh{--c:#24292f;--g:#aab4be;border:1px solid #4a5058}
+.st{--g:#66c0f4;background:linear-gradient(135deg,#171a21,#2a475e)}
+
+.row{display:flex;gap:10px;margin-top:20px}
+.save{position:relative;overflow:hidden;flex:1;padding:17px;border:0;border-radius:14px;cursor:pointer;font-family:inherit;font-weight:800;font-size:15px;letter-spacing:1.5px;text-transform:uppercase;color:#fff;background:linear-gradient(135deg,var(--o),#ff5a00);animation:pulse 2.6s infinite;transition:transform .15s}
+.share{display:none;padding:0 18px;border:2px solid var(--ln);border-radius:14px;background:none;color:#f0f0f2;font:700 13px var(--mono);cursor:pointer}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,120,0,.5)}70%,100%{box-shadow:0 0 0 14px rgba(255,120,0,0)}}
+
+.foot{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,149,0,.2);font:700 10px var(--mono);letter-spacing:2px;color:var(--o);text-transform:uppercase}
+.foot i{width:6px;height:6px;border-radius:50%;background:var(--o);animation:blink 1.4s infinite}
+@keyframes blink{50%{opacity:.25}}
+
+/* button effects */
+@keyframes spin{to{--a:360deg}}
+@keyframes breathe{0%,100%{box-shadow:0 0 14px rgba(255,120,0,.25)}50%{box-shadow:0 0 34px rgba(255,140,0,.6),0 0 6px rgba(255,170,60,.5)}}
+@keyframes glow{0%,100%{box-shadow:0 0 0 rgba(0,0,0,0)}50%{box-shadow:0 0 16px color-mix(in srgb,var(--g) 55%,transparent)}}
+@keyframes sheen{0%,55%{transform:translateX(-130%) skewX(-20deg)}100%{transform:translateX(330%) skewX(-20deg)}}
+@keyframes nudge{50%{translate:5px 0}}
+.save::after{content:"";position:absolute;top:0;bottom:0;left:0;width:35%;pointer-events:none;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);animation:sheen 3.2s ease-in-out infinite}
+.btn::before,.s::before,.save::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(170px circle at var(--x,50%) var(--y,50%),rgba(255,255,255,.28),transparent 70%)}
+.btn::before{background:radial-gradient(190px circle at var(--x,50%) var(--y,50%),rgba(255,149,0,.26),transparent 70%)}
+.tp::before{opacity:1}
+@media (hover:hover){.btn:hover::before,.s:hover::before,.save:hover::before{opacity:1}}
+.rp{position:absolute;width:20px;height:20px;margin:-10px;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(255,255,255,.6),transparent 70%);animation:rp .6s ease-out forwards}
+@keyframes rp{to{transform:scale(14);opacity:0}}
+@media (max-width:400px){.card{padding:24px 16px 20px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<main class="card">
+
+  <div class="top rv" style="--i:0">
+    <a class="wrap" href="https://mos1-machine.github.io/MOS1_PROJECTS/" aria-label="MOS1 Projects">
+      <div class="avatar"><img id="logo" alt="MOS1 Logo" width="400" height="225"></div>
+    </a>
+    <div class="langs">
+      <button class="l" data-lang="de" onclick="setLanguage('de')">DE</button>
+      <button class="l" data-lang="en" onclick="setLanguage('en')">EN</button>
+      <button class="l" data-lang="uk" onclick="setLanguage('uk')">UA</button>
+    </div>
+  </div>
+
+  <h1 class="rv" style="--i:2" id="name">Artem Rostovskyi</h1>
+  <p class="title rv" style="--i:3" id="ttl" data-i18n="title">Technician &amp; Programmer</p>
+
+  <p class="bio rv" style="--i:4" data-i18n="bio">Hardware &amp; Software Engineering: 3D printing (FDM/SLA), microcontroller programming (Arduino, ESP, Raspberry Pi), CAD modeling, computer diagnostics, server installation, network technology and web development. From idea to finished prototype.</p>
+
+  <div class="skills rv" style="--i:5">
+    <span class="chip">Python</span><span class="chip">C++</span>
+    <span class="chip" data-skill="web">Web</span><span class="chip" data-skill="server">Server</span>
+    <span class="chip" data-skill="network">Network</span><span class="chip">Blender</span>
+    <span class="chip" data-skill="print">3D Print</span>
+  </div>
+
+  <a class="port rv" style="--i:6" href="https://mos1-machine.github.io/MOS1_PROJECTS/">
+    <div>MOS1 Projects<small data-i18n="port">VIEW PORTFOLIO</small></div><i class="ar"></i>
+  </a>
+
+  <div class="col rv" style="--i:7">
+    <a href="tel:+4915120405578" class="btn">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20.01 15.38c-1.23 0-2.42-.2-3.53-.56a.977.977 0 00-1.01.24l-1.57 1.97c-2.83-1.35-5.48-3.9-6.89-6.83l1.95-1.66c.27-.28.35-.67.24-1.02-.37-1.11-.56-2.3-.56-3.53 0-.54-.45-.99-.99-.99H4.19C3.65 3 3 3.24 3 3.99 3 13.28 10.73 21 20.01 21c.71 0 .99-.63.99-1.18v-3.45c0-.54-.45-.99-.99-.99z"/></svg>
+      <div><small data-i18n="phone">PHONE</small><span>+49 151 20405578</span></div>
+    </a>
+    <a href="mailto:art.rostovsky@gmail.com" class="btn">
+      <svg fill="currentColor" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      <div><small>E-MAIL</small><span>art.rostovsky@gmail.com</span></div>
+    </a>
+  </div>
+
+  <div class="grid rv" style="--i:8">
+    <a href="https://t.me/MOS1_machine" class="s tg" style="--k:0">Telegram</a>
+    <a href="https://discord.com/users/700635665821335564" class="s dc" style="--k:1">Discord</a>
+    <a href="https://github.com/MOS1-machine" class="s gh" style="--k:2">GitHub</a>
+    <a href="https://wa.me/4915120405578" class="s wa" style="--k:3">WhatsApp</a>
+    <a href="https://steamcommunity.com/profiles/76561199108125975/" class="s st" style="--k:4">Steam</a>
+    <a href="https://www.youtube.com/@DO5_MOS1" class="s yt" style="--k:5">YouTube</a>
+  </div>
+
+  <div class="row rv" style="--i:9">
+    <button class="save" id="sv" data-i18n="save" onclick="downloadVCard()">Save Contact</button>
+    <button class="share" id="sh" data-i18n="share" onclick="shareCard()">Share</button>
+  </div>
+
+  <div class="foot rv" style="--i:10"><i></i><span data-i18n="footer">SCANNED VIA NFC</span></div>
+
+</main>
+
+<script>
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var SAVE = navigator.connection && navigator.connection.saveData;
+var T = {
+  de:{title:'Techniker & Programmierer',bio:'Hardware & Software Engineering: 3D-Druck (FDM/SLA), Mikrocontroller-Programmierung (Arduino, ESP, Raspberry Pi), CAD-Modellierung, Computerdiagnostik, Serverinstallation, Netzwerktechnik und Webentwicklung. Von der Idee bis zum fertigen Prototyp.',phone:'TELEFON',port:'PORTFOLIO ANSEHEN',save:'Kontakt speichern',done:'Gespeichert',share:'Teilen',footer:'VIA NFC GESCANNT',skills:{web:'Web',server:'Server',network:'Netzwerk',print:'3D-Druck'}},
+  en:{title:'Technician & Programmer',bio:'Hardware & Software Engineering: 3D printing (FDM/SLA), microcontroller programming (Arduino, ESP, Raspberry Pi), CAD modeling, computer diagnostics, server installation, network technology and web development. From idea to finished prototype.',phone:'PHONE',port:'VIEW PORTFOLIO',save:'Save Contact',done:'Saved',share:'Share',footer:'SCANNED VIA NFC',skills:{web:'Web',server:'Server',network:'Network',print:'3D Print'}},
+  uk:{title:'Технік & Програміст',bio:'Апаратне та програмне забезпечення: 3D-друк (FDM/SLA), програмування мікроконтролерів (Arduino, ESP, Raspberry Pi), CAD-моделювання, діагностика комп\'ютерів, встановлення серверів, мережеві технології та веб-розробка. Від ідеї до готового прототипу.',phone:'ТЕЛЕФОН',port:'ПЕРЕГЛЯНУТИ ПОРТФОЛІО',save:'Зберегти контакт',done:'Збережено',share:'Поділитися',footer:'ВІДСКАНОВАНО ЧЕРЕЗ NFC',skills:{web:'Web',server:'Сервер',network:'Мережа',print:'3D-друк'}}
+};
+var lang = 'en', ready = false;
+
+function scr(el, txt) {
+  if (RM) { el.textContent = txt; return; }
+  var ch = '01<>/#$%&*+=?XYZ', f = 0, n = Math.max(14, txt.length);
+  clearInterval(el._t);
+  el._t = setInterval(function () {
+    f++;
+    el.textContent = Array.from(txt).map(function (c, i) {
+      return (c === ' ' || i < f * txt.length / n) ? c : ch[Math.random() * ch.length | 0];
+    }).join('');
+    if (f >= n) { clearInterval(el._t); el.textContent = txt; }
+  }, 30);
+}
+
+function setLanguage(l) {
+  var t = T[l]; if (!t) return;
+  lang = l; document.documentElement.lang = l;
+  document.querySelectorAll('.l').forEach(function (b) { b.classList.toggle('on', b.dataset.lang === l); });
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    if (el.id === 'ttl' && ready) scr(el, t.title); else el.textContent = t[el.dataset.i18n];
+  });
+  document.querySelectorAll('[data-skill]').forEach(function (el) { el.textContent = t.skills[el.dataset.skill]; });
+}
+
+function downloadVCard() {
+  var v = ['BEGIN:VCARD','VERSION:3.0','FN:Artem Rostovskyi','TEL:+4915120405578','EMAIL:art.rostovsky@gmail.com',
+    'NOTE:Technician & Programmer - Python, C++, Arduino, ESP, Raspberry Pi, 3D Print, Server, Network, Web',
+    'URL:https://github.com/MOS1-machine','URL:https://mos1-machine.github.io/MOS1_PROJECTS/','URL:https://t.me/MOS1_machine',
+    'URL:https://steamcommunity.com/profiles/76561199108125975/','URL:https://www.youtube.com/@DO5_MOS1','END:VCARD'].join('\r\n');
+  var u = URL.createObjectURL(new Blob([v], {type: 'text/vcard'}));
+  var a = document.createElement('a'); a.href = u; a.download = 'Artem_Rostovskyi.vcf'; a.click(); URL.revokeObjectURL(u);
+  var b = document.getElementById('sv'); b.textContent = T[lang].done;
+  setTimeout(function () { b.textContent = T[lang].save; }, 1800);
+}
+
+function shareCard() {
+  navigator.share({title: 'Artem Rostovskyi', url: location.href.split('#')[0]}).catch(function () {});
+}
+
+/* touch light and ripple on buttons */
+document.querySelectorAll('.btn,.s,.save,.port').forEach(function (b) {
+  function pos(e) {
+    var r = b.getBoundingClientRect();
+    b.style.setProperty('--x', (e.clientX - r.left) + 'px');
+    b.style.setProperty('--y', (e.clientY - r.top) + 'px');
+  }
+  b.addEventListener('pointermove', pos);
+  b.addEventListener('pointerdown', function (e) {
+    pos(e); b.classList.add('tp');
+    if (RM) return;
+    var r = b.getBoundingClientRect(), sp = document.createElement('span');
+    sp.className = 'rp'; sp.style.left = (e.clientX - r.left) + 'px'; sp.style.top = (e.clientY - r.top) + 'px';
+    b.appendChild(sp); sp.addEventListener('animationend', function () { sp.remove(); });
+  });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(function (n) {
+    b.addEventListener(n, function () { b.classList.remove('tp'); });
+  });
+});
+
+/* haptic tap on Android */
+document.addEventListener('pointerdown', function (e) {
+  if (navigator.vibrate && e.target.closest('a,button')) navigator.vibrate(12);
+});
+
+/* logo: GIF plays once from the moment it is shown; static image as fallback */
+function logo() {
+  var img = document.getElementById('logo'), done = false;
+  function scan() { document.querySelector('.avatar').classList.add('scan'); }
+  function stat() { if (done) return; done = true; img.src = 'logo-static.webp'; scan(); }
+  if (RM || SAVE) { stat(); return; }
+  var pre = new Image();
+  pre.onload = function () { if (!done) { done = true; img.src = 'logo.gif'; setTimeout(scan, 5800); } };
+  pre.onerror = stat;
+  pre.src = 'logo.gif';
+  setTimeout(stat, 3000);
+}
+
+/* PCB background: static layer cached once, a few pulses at 30 fps */
+function bg() {
+  var c = document.getElementById('bg'), x = c.getContext('2d');
+  var b = document.createElement('canvas'), bx = b.getContext('2d');
+  var w, h, P = [], G = 34, last = 0;
+  var D = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
+  function gen() {
+    P = [];
+    var n = Math.max(10, Math.min(22, Math.round(w * h / 38000)));
+    for (var i = 0; i < n; i++) {
+      var gx = Math.round(Math.random() * w / G) * G, gy = Math.round(Math.random() * h / G) * G;
+      var d = Math.random() * 8 | 0, pts = [[gx, gy]], st = 5 + Math.random() * 8 | 0;
+      for (var k = 0; k < st; k++) {
+        var len = 1 + Math.random() * 3 | 0;
+        gx += D[d][0] * G * len; gy += D[d][1] * G * len; pts.push([gx, gy]);
+        d = (d + (Math.random() < .5 ? 1 : 7)) % 8;
+      }
+      var L = 0, cum = [0];
+      for (var j = 1; j < pts.length; j++) { L += Math.hypot(pts[j][0]-pts[j-1][0], pts[j][1]-pts[j-1][1]); cum.push(L); }
+      P.push({p: pts, cum: cum, L: L, s: -Math.random() * 500, v: 70 + Math.random() * 80});
+    }
+    bx.clearRect(0, 0, w, h); bx.strokeStyle = 'rgba(255,149,0,.12)'; bx.lineWidth = 1.3; bx.lineJoin = 'round';
+    P.forEach(function (q) {
+      bx.beginPath(); q.p.forEach(function (pt, i) { i ? bx.lineTo(pt[0], pt[1]) : bx.moveTo(pt[0], pt[1]); }); bx.stroke();
+      [q.p[0], q.p[q.p.length-1]].forEach(function (pt) { bx.beginPath(); bx.arc(pt[0], pt[1], 3.2, 0, 6.3); bx.stroke(); });
+    });
+  }
+  function at(q, s) {
+    s = Math.max(0, Math.min(q.L, s));
+    for (var i = 1; i < q.cum.length; i++) if (s <= q.cum[i]) {
+      var u = (s - q.cum[i-1]) / ((q.cum[i] - q.cum[i-1]) || 1);
+      return [q.p[i-1][0] + (q.p[i][0]-q.p[i-1][0]) * u, q.p[i-1][1] + (q.p[i][1]-q.p[i-1][1]) * u];
+    }
+    return q.p[q.p.length-1];
+  }
+  function size() {
+    var d = Math.min(devicePixelRatio || 1, 2); w = innerWidth; h = innerHeight;
+    c.width = b.width = w * d; c.height = b.height = h * d;
+    x.setTransform(d, 0, 0, d, 0, 0); bx.setTransform(d, 0, 0, d, 0, 0);
+    gen(); x.clearRect(0, 0, w, h); x.drawImage(b, 0, 0, w, h);
+  }
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (document.hidden || now - last < 33) return;
+    var dt = Math.min(.06, (now - last) / 1000); last = now;
+    x.clearRect(0, 0, w, h); x.drawImage(b, 0, 0, w, h);
+    x.lineCap = 'round'; x.lineWidth = 2.2;
+    P.forEach(function (q) {
+      q.s += q.v * dt;
+      if (q.s > q.L + 70) { q.s = -Math.random() * 400; return; }
+      if (q.s < 0) return;
+      for (var k = 0; k < 5; k++) {
+        var a = at(q, q.s - k * 10), e = at(q, q.s - (k + 1) * 10);
+        x.strokeStyle = 'rgba(255,170,60,' + ((1 - k / 5) * .8).toFixed(2) + ')';
+        x.beginPath(); x.moveTo(a[0], a[1]); x.lineTo(e[0], e[1]); x.stroke();
+      }
+      var hd = at(q, q.s); x.fillStyle = '#ffe2b0'; x.beginPath(); x.arc(hd[0], hd[1], 2.6, 0, 6.3); x.fill();
+    });
+  }
+  addEventListener('resize', size); size();
+  if (!RM && !SAVE) requestAnimationFrame(frame);
+}
+
+/* start: pick language from the phone, nothing is stored */
+var nl = (navigator.language || 'en').slice(0, 2).toLowerCase();
+setLanguage(nl === 'de' ? 'de' : nl === 'uk' ? 'uk' : 'en');
+if (navigator.share) document.getElementById('sh').style.display = 'block';
+ready = true;
+scr(document.getElementById('name'), 'Artem Rostovskyi');
+scr(document.getElementById('ttl'), T[lang].title);
+logo();
+bg();
+</script>
+</body>
+</html>
